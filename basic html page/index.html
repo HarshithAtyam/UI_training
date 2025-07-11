@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login Page</title>
+  <link rel="stylesheet" href="styles.css"/>
+</head>
+<body>
+  <div class="container">
+    <form class="login-box">
+      <div class="logo">
+        <img src="HotSpotLogo.svg" alt="HotSpot Logo"/>
+      </div>
+      <h2>Login into your Account</h2>
+      
+      <label for="email">Email Address</label>
+      <input type="email" id="email" placeholder="Email Address" required/>
+
+      <label for="password">Password</label>
+      <input type="password" id="password" placeholder="Password" required/>
+
+      <div class="options">
+        <label><input type="checkbox"/> Remember me</label>
+        <a href="#">Forgot Password?</a>
+      </div>
+
+      <button class="login-btn" type="submit">login</button>
+      <div class ="separator">
+            <hr style="flex: 1; border: none; border-top: 1px solid #ccc; margin: 0;">
+            <span style="margin: 0 10px; color: #666;">or</span>
+            <hr style="flex: 1; border: none; border-top: 1px solid #ccc; margin: 0;">
+    </div>
+      <div class="btn-group">
+        <button class="social-btn google"><image class="signin-logo" src="./google.svg" alt=""><p class="btn-text">Sign in with Google</p></button>
+        <button class="social-btn apple"><image class="signin-logo" src="./apple-icon.png" alt=""><p class="btn-text">Sign in with Apple</p></button>
+        <button class="social-btn microsoft"><image class="signin-logo" src="./microsoft-icon.svg" alt=""><p class="btn-text">Sign in with Microsoft</p></button>
+      </div>
+      <p class="bottom-link">New User? <a href="#">Click Here</a></p>
+      <p class="bottom-link">
+        Want to park your customers and employees?
+        <a href="#">Click Here</a>
+      </p>
+    </form>
+  </div>
+</body>
+</html>
