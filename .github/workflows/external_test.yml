@@ -1,0 +1,34 @@
+name: External Dispatch Test
+
+# 1. Define the event that triggers this workflow
+# The 'workflow_dispatch' event allows manual and external API triggering.
+on:
+  workflow_dispatch:
+    inputs:
+      name:
+        description: 'The name of the user triggering the run'
+        required: true
+        default: 'External Trigger'
+  
+  # 2. Add 'push' event for a quick internal test (optional)
+  push:
+    branches:
+      - main
+
+# Define the job
+jobs:
+  test_trigger:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Print Trigger Context
+        run: |
+          echo "--- Workflow Triggered! ---"
+          echo "Event: ${{ github.event_name }}"
+          # For a workflow_dispatch event, show the input variable
+          if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
+            echo "Input Name: ${{ github.event.inputs.name }}"
+          fi
+          echo "The current time is $(date)"
