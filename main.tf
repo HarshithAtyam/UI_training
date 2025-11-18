@@ -28,7 +28,7 @@ resource "fabric_workspace" "workspace" {
 # --- Assign Admin Role to User ---
 resource "fabric_workspace_role_assignment" "add_admin" {
   workspace_id = fabric_workspace.workspace.id
-  principal_id = var.admin_email
+  principal = var.admin_email
   role         = "Admin"
 }
 
