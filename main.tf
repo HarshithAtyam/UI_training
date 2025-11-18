@@ -18,8 +18,11 @@ provider "fabric" {
 }
 
 provider "azuread" {
-  tenant_id = var.tenant_id
+  tenant_id     = var.tenant_id
+  client_id     = var.client_id
+  client_secret = var.client_secret
 }
+
 
 # --- Get the capacity from the mapped name ---
 data "fabric_capacity" "selected" {
