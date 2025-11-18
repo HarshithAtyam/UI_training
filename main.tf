@@ -4,6 +4,10 @@ terraform {
       source  = "microsoft/fabric"
       version = "~> 1.0"
     }
+    azuread = {
+      source  = "hashicorp/azuread"
+      version = "~> 2.47"
+    }
   }
 }
 
@@ -11,6 +15,10 @@ provider "fabric" {
   client_id     = var.client_id
   client_secret = var.client_secret
   tenant_id     = var.tenant_id
+}
+
+provider "azuread" {
+  tenant_id = var.tenant_id
 }
 
 # --- Get the capacity from the mapped name ---
@@ -28,8 +36,13 @@ resource "fabric_workspace" "workspace" {
 # --- Assign Admin Role to User ---
 resource "fabric_workspace_role_assignment" "add_admin" {
   workspace_id = fabric_workspace.workspace.id
-  principal = var.admin_email
-  role         = "Admin"
+
+  principal = {
+    id   = local.admin_object_id
+    type = "User"
+  }
+
+  role = "Admin"
 }
 
 # --- Outputs ---
