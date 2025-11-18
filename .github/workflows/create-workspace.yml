@@ -1,0 +1,49 @@
+name: Create Fabric Workspace
+
+on:
+  workflow_dispatch:
+    inputs:
+      workspace_name:
+        description: "Name of the workspace"
+        required: true
+      capacity_code:
+        description: "capacity name(F8-UK-South_Dev)"
+        required: true
+      admin_email:
+        description: "Admin email"
+        required: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repo
+      uses: actions/checkout@v3
+
+    - name: Map capacity code → capacity ID
+      id: capacity-map
+      run: |
+        case "${{ github.event.inputs.capacity_code }}" in
+          "F8-UK-South_Dev") echo "capacity=fsku9uks9ext9dev9001" >> $GITHUB_OUTPUT ;;
+          *)
+            echo "Unknown capacity code"
+            exit 1
+          ;;
+        esac
+
+    - name: Install Terraform
+      uses: hashicorp/setup-terraform@v2
+
+    - name: Terraform Init
+      run: terraform init
+
+    - name: Terraform Apply
+      env:
+        TF_VAR_tenant_id: ${{ secrets.TENANT_ID }}
+        TF_VAR_client_id: ${{ secrets.CLIENT_ID }}
+        TF_VAR_client_secret: ${{ secrets.CLIENT_SECRET }}
+        TF_VAR_workspace_name: ${{ github.event.inputs.workspace_name }}
+        TF_VAR_admin_email: ${{ github.event.inputs.admin_email }}
+        TF_VAR_capacity_name: ${{ steps.capacity-map.outputs.capacity }}
+      run: terraform apply -auto-approve
