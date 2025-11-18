@@ -1,0 +1,6 @@
+tenant_id     = ""
+client_id     = ""
+client_secret = ""
+workspace_name = ""
+capacity_name  = ""
+admin_email    = ""
