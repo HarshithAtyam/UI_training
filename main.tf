@@ -4,10 +4,6 @@ terraform {
       source  = "microsoft/fabric"
       version = "~> 1.0"
     }
-    azuread = {
-      source  = "hashicorp/azuread"
-      version = "~> 2.47"
-    }
   }
 }
 
@@ -17,43 +13,35 @@ provider "fabric" {
   tenant_id     = var.tenant_id
 }
 
-provider "azuread" {
-  tenant_id     = var.tenant_id
-  client_id     = var.client_id
-  client_secret = var.client_secret
-}
-
-
-# --- Get the capacity from the mapped name ---
+# --- Get Target Capacity ---
 data "fabric_capacity" "selected" {
   display_name = var.capacity_name
 }
 
-# --- Create the Fabric Workspace ---
+# --- Create Workspace ---
 resource "fabric_workspace" "workspace" {
   display_name = var.workspace_name
-  description  = "Workspace created automatically via GitHub → Terraform pipeline"
+  description  = "Workspace created automatically via GitHub → Terraform"
   capacity_id  = data.fabric_capacity.selected.id
 }
 
-# --- Assign Admin Role to User ---
-resource "fabric_workspace_role_assignment" "add_admin" {
+# --- Assign Admin Role using Object ID ---
+resource "fabric_workspace_role_assignment" "admin_assignment" {
   workspace_id = fabric_workspace.workspace.id
 
   principal = {
-    id   = local.admin_object_id
+    id   = var.admin_object_id   # <-- NOW USING OBJECT ID, CORRECT
     type = "User"
   }
 
   role = "Admin"
 }
 
-# --- Outputs ---
 output "workspace_details" {
   value = {
     id       = fabric_workspace.workspace.id
     name     = fabric_workspace.workspace.display_name
     capacity = var.capacity_name
-    admin    = var.admin_email
+    admin    = var.admin_object_id
   }
 }
