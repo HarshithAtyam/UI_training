@@ -4,11 +4,15 @@ on:
   workflow_dispatch:
     inputs:
       workspace_name:
+        description: "Workspace Name"
         required: true
       capacity_name:
+        description: "Capacity Name"
         required: true
-      admin_email:
+      admin_object_id:
+        description: "User Object ID"
         required: true
+
 
 jobs:
   deploy:
@@ -28,14 +32,15 @@ jobs:
           echo "Admin Email: $TF_VAR_admin_email"
           echo "---- DEBUG END ----"
 
-      - name: Set Terraform env vars
+      - name: Export Terraform environment variables
         run: |
           echo "TF_VAR_client_id=${{ secrets.CLIENT_ID }}" >> $GITHUB_ENV
           echo "TF_VAR_client_secret=${{ secrets.CLIENT_SECRET }}" >> $GITHUB_ENV
           echo "TF_VAR_tenant_id=${{ secrets.TENANT_ID }}" >> $GITHUB_ENV
           echo "TF_VAR_workspace_name=${{ github.event.inputs.workspace_name }}" >> $GITHUB_ENV
           echo "TF_VAR_capacity_name=${{ github.event.inputs.capacity_name }}" >> $GITHUB_ENV
-          echo "TF_VAR_admin_email=${{ github.event.inputs.admin_email }}" >> $GITHUB_ENV
+          echo "TF_VAR_admin_object_id=${{ github.event.inputs.admin_object_id }}" >> $GITHUB_ENV
+
 
 
       - name: Setup Terraform
