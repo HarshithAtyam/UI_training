@@ -1,5 +1,4 @@
-# Service principle variables
-
+# Service principal variables
 variable "tenant_id" {
   description = "Azure Tenant ID."
   type        = string
@@ -19,7 +18,6 @@ variable "client_secret" {
 }
 
 # Workspace & Capacity Variables
-
 variable "workspace_name" {
   description = "Name of the workspace to create."
   type        = string
@@ -30,15 +28,17 @@ variable "capacity_name" {
   type        = string
 }
 
+variable "admin_email" {
+  description = "Email of admin to assign to the workspace."
+  type        = string
+}
+
+# AzureAD lookup for email → object_id
 data "azuread_user" "admin" {
   user_principal_name = var.admin_email
 }
 
-variable "admin_email" {
-  description = "Email of admin"
-  type        = string
-}
-
+# Convert lookup to a local variable
 locals {
   admin_object_id = data.azuread_user.admin.object_id
 }
