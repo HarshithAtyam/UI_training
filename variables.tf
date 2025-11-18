@@ -30,7 +30,15 @@ variable "capacity_name" {
   type        = string
 }
 
+data "azuread_user" "admin" {
+  user_principal_name = var.admin_email
+}
+
 variable "admin_email" {
-  description = "Admin email to be added to the workspace."
+  description = "Email of admin"
   type        = string
+}
+
+locals {
+  admin_object_id = data.azuread_user.admin.object_id
 }
