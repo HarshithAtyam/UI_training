@@ -17,6 +17,16 @@ jobs:
     steps:
       - name: Checkout repo
         uses: actions/checkout@v3
+      - name: Debug Environment Variables
+        run: |
+          echo "---- DEBUG START ----"
+          echo "CLIENT_ID length: ${#TF_VAR_client_id}"
+          echo "CLIENT_SECRET length: ${#TF_VAR_client_secret}"
+          echo "TENANT_ID length: ${#TF_VAR_tenant_id}"
+          echo "Workspace: $TF_VAR_workspace_name"
+          echo "Capacity: $TF_VAR_capacity_name"
+          echo "Admin Email: $TF_VAR_admin_email"
+          echo "---- DEBUG END ----"
 
       - name: Set Terraform env vars
         run: |
@@ -26,6 +36,7 @@ jobs:
           echo "TF_VAR_workspace_name=${{ github.event.inputs.workspace_name }}" >> $GITHUB_ENV
           echo "TF_VAR_capacity_name=${{ github.event.inputs.capacity_name }}" >> $GITHUB_ENV
           echo "TF_VAR_admin_email=${{ github.event.inputs.admin_email }}" >> $GITHUB_ENV
+
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
